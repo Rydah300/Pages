@@ -5,8 +5,8 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f7fa;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,75 +14,76 @@ body {
     color: #1d1d1f;
 }
 
-#formContainer {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+#pageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    max-width: 400px;
-    overflow: hidden;
-    position: relative;
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
+    max-width: 100%;
+    padding: 20px;
 }
 
-#formContainer.flipped {
-    transform: rotateY(180deg);
-}
-
-#loginForm, #createForm {
-    padding: 40px 40px 20px;
-    backface-visibility: hidden;
-    position: absolute;
+.form-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
     width: 100%;
-    transform-style: preserve-3d;
-}
-
-#createForm {
-    transform: rotateY(180deg);
+    max-width: 380px;
+    padding: 40px 30px;
+    text-align: center;
 }
 
 .logo {
-    text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+}
+
+.logo img {
+    width: 60px;
+    height: auto;
 }
 
 h1 {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 600;
-    text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 
-#subtitle {
-    text-align: center;
-    color: #86868b;
-    margin-bottom: 30px;
+p {
+    font-size: 14px;
+    color: #6e6e73;
+    margin-bottom: 24px;
 }
 
 .input-group {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .input-group input {
     width: 100%;
     padding: 12px 16px;
     border: 1px solid #d2d2d7;
-    border-radius: 8px;
-    font-size: 17px;
-    transition: border-color 0.3s;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .input-group input:focus {
     outline: none;
     border-color: #0071e3;
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.2);
+}
+
+.input-group.code-input input {
+    text-align: center;
+    letter-spacing: 4px;
+    font-size: 18px;
 }
 
 .input-row {
     display: flex;
-    gap: 10px;
+    gap: 12px;
 }
 
 .input-row .input-group {
@@ -92,9 +93,10 @@ h1 {
 .checkbox {
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    justify-content: center;
+    margin: 16px 0;
     font-size: 14px;
-    color: #86868b;
+    color: #6e6e73;
 }
 
 .checkbox input {
@@ -106,22 +108,30 @@ h1 {
     width: 100%;
     padding: 12px;
     background: #0071e3;
-    color: white;
+    color: #fff;
     border: none;
-    border-radius: 8px;
-    font-size: 17px;
-    font-weight: 600;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-btn svg {
+    width: 24px;
+    height: 24px;
 }
 
 .submit-btn:hover {
     background: #005bb5;
+    transform: scale(1.02);
 }
 
 .links {
-    text-align: center;
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .links a {
@@ -140,7 +150,7 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -148,11 +158,11 @@ h1 {
 }
 
 .modal-content {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 32px;
+    max-width: 320px;
     text-align: center;
-    max-width: 300px;
 }
 
 .hidden {
@@ -160,49 +170,44 @@ h1 {
 }
 
 .page {
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
     padding: 20px;
 }
 
-.container {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
-}
-
 .error {
-    color: #d0021b;
-    text-align: center;
-    margin-top: 10px;
+    color: #d70015;
+    font-size: 14px;
+    margin-top: 12px;
 }
 
 @media (max-width: 480px) {
-    #formContainer, .container {
-        margin: 20px;
-        padding: 20px;
+    .form-card, .modal-content {
+        padding: 24px;
+        max-width: 90%;
     }
 }
 
 @media (prefers-color-scheme: dark) {
     body {
-        background: #1c1c1e;
+        background: #000;
         color: #f5f5f7;
     }
 
-    #formContainer, .modal-content, .container {
-        background: #2c2c2e;
-        color: #f5f5f7;
+    .form-card, .modal-content {
+        background: #1c1c1e;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
     }
 
     .input-group input {
-        background: #3c3c3e;
-        border-color: #48484a;
+        background: #2c2c2e;
+        border-color: #3c3c3e;
         color: #f5f5f7;
+    }
+
+    p, .checkbox {
+        color: #86868b;
     }
 }
